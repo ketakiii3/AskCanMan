@@ -1,2 +1,1 @@
-This is the repository for Free Raj.
-Dump all the code for Free Raj here.
+This is the repository for Canteen Management System that has a friendly chatbot called CanMan.
