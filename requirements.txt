@@ -1,0 +1,18 @@
+# usage : pip install -r requirements.txt
+numpy
+nltk
+tensorflow
+tflearn
+pymongo
+flask
+qrcode
+flask_pymongo
+opencv-python
+dlib 
+face-recognition 
+imutils 
+scikit-learn
+fasttext
+gensim
+tsne
+scikit-learn-extra
