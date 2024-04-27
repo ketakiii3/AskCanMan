@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+  <title>CanMan</title>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f0f0f0;
+    }
+    .chat-container {
+        max-width: 500px;
+        margin: 20px auto;
+        background-color: #ff6b6b;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+    .chat-header {
+        background-color: #d63031;
+        color: #fff;
+        padding: 10px;
+        text-align: center;
+        font-size: 24px;
+    }
+    .chat-body {
+        padding: 20px;
+        height: 250px;
+        overflow-y: scroll;
+    }
+    .chat-message {
+        margin-bottom: 20px;
+    }
+    .user-message {
+        text-align: right;
+    }
+    .bot-message {
+        text-align: left;
+    }
+    .message-text {
+        padding: 10px;
+        border-radius: 10px;
+        max-width: 70%;
+        display: inline-block;
+    }
+    .user-message .message-text {
+        background-color: #0984e3;
+        color: #fff;
+    }
+    .bot-message .message-text {
+        background-color: #ffeaa7;
+        color: #000;
+    }
+    .chat-input-container {
+        padding: 10px;
+        background-color: #d63031;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        text-align: center;
+    }
+    .chat-input {
+        width: calc(100% - 80px);
+        margin-right: 10px;
+        border: none;
+        border-radius: 20px;
+        padding: 10px 20px;
+        box-sizing: border-box;
+        font-size: 16px;
+    }
+    .send-button {
+      background-color: #ffeaa7; /* Yellow button */
+          color: #d63031; /* Dark red text color */
+          border: none;
+          border-radius: 20px;
+          padding: 10px 20px;
+          font-size: 16px;
+          cursor: pointer;
+          transition: background-color 0.3s;
+          display: block; /* Adjusted to display as block element */
+          margin: 10px auto; /* Centered horizontally */
+          margin-right: 10px;
+  }
+  .send-button:hover {
+          background-color: #f6e58d; /* Lighter yellow on hover */
+      }
+    </style>
+  </head>
+  <div class="chat-container">
+    <div class="chat-header">
+        <h2>🍔 Ask CanMan 🤖</h2>
+    </div>
+    <div class="chat-body" id="chatbox">
+        <div class="bot-message">
+            <div class="message-text"> Hello, I am CanMan. How can I assist you today? 😊</div>
+        </div>
+    </div>
+    <div class="chat-container">
+      <!-- ... -->
+      <div id="userInput"></div> <!-- Add this line -->
+    </div>
+    <div class="chat-input-container">
+        <input type="text" class="chat-input" id="nameInput" placeholder="Type your message here...">
+        <button class="send-button" onclick="getBotResponse()">Send</button>
+    </div>
+</div>
+
+
+
+<script>
+/*
+        function getBotResponse() {
+          var rawText = $("#nameInput").val();
+          var userHtml = '<div class="user-message"><div class="message-text">' + rawText + '</div></div>';
+          $("#nameInput").val("");
+          $("#chatbox").append(userHtml);
+          document
+            .getElementById("userInput")
+            .scrollIntoView({ block: "start", behavior: "smooth" });
+          $.get("/get", { msg: rawText }).done(function(data) {
+            var botHtml = '<div class="bot-message"><div class="message-text">' + data + '</div></div>';
+            $("#chatbox").append(botHtml);
+            document.getElementById("chatbox").scrollTop = document.getElementById("chatbox").scrollHeight;
+          });
+
+        }
+
+        $("#send").click(function() {
+          getBotResponse();
+        });
+        
+        $("#nameInput").keypress(function(e) {
+          if (e.which == 13) {
+            getBotResponse();
+          }
+        }
+        );
+
+  function getBotResponse() {
+    var rawText = $("#nameInput").val();
+    var userHtml = '<div class="user-message"><div class="message-text">' + rawText + '</div></div>';
+    $("#nameInput").val("");
+    $("#chatbox").append(userHtml);
+    document.getElementById("userInput").scrollIntoView({ block: "start", behavior: "smooth" });
+  
+    $.ajax({
+      type: "POST", // Use POST instead of GET
+      url: "/get", // Assuming '/get' is the correct route
+      data: { msg: rawText }, // Send the message as part of the request body
+      success: function(data) {
+        var botHtml = '<div class="bot-message"><div class="message-text">' + data + '</div></div>';
+        $("#chatbox").append(botHtml);
+        document.getElementById("chatbox").scrollTop = document.getElementById("chatbox").scrollHeight;
+      },
+      error: function(xhr, status, error) {
+        console.log("Error:", error);
+      }
+    });
+  }
+  
+  $("#send").click(function() {
+    getBotResponse();
+  });
+  
+  $("#nameInput").keypress(function(e) {
+    if (e.which == 13) {
+      getBotResponse();
+    }
+  });
+  */
+
+  function getBotResponse() {
+    console.log("getBotResponse function called");
+  
+    var rawText = $("#nameInput").val();
+    var userHtml = '<div class="user-message"><div class="message-text">' + rawText + '</div></div>';
+    $("#nameInput").val("");
+    $("#chatbox").append(userHtml);
+    //document.getElementById("userInput").scrollIntoView({ block: "start", behavior: "smooth" });
+  
+    console.log("Sending AJAX request with message:", rawText);
+  
+    $.ajax({
+      type: "POST",
+      url: "/get",
+      data: { msg: rawText },
+      success: function(data) {
+        console.log("Received response from server:", data);
+        var botHtml = '<div class="bot-message"><div class="message-text">' + data + '</div></div>';
+        $("#chatbox").append(botHtml);
+        document.getElementById("chatbox").scrollTop = document.getElementById("chatbox").scrollHeight;
+      },
+      error: function(xhr, status, error) {
+        console.log("Error:", error);
+      }
+    });
+  }
+  
+  $("#send").click(function() {
+    getBotResponse();
+  });
+  
+  $("#nameInput").keypress(function(e) {
+    if (e.which == 13) {
+      getBotResponse();
+    }
+  });
+
+</script>
+</div>
+</body>
+</html>

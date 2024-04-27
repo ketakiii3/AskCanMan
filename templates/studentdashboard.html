@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="/static/dashStyle.css">
+
+    <style>
+       
+        .ask-canman-text {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #ff0000;
+            cursor: pointer;
+        }
+
+        .ask-canman-text:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+	<div class="nav">
+	<i class='fas fa-coffee'></i>
+		<div class="logo">
+		<h1>free<b>Raj</b></h1>
+		</div>
+	</div>
+    <h2>Welcome, {{ student["uname"] }}!</h2><br>
+
+    <h2>Menu</h2>
+    <form action="/place_order" method="post">
+        <input type="hidden" name="prn" value="{{ student["prn"] }}">
+        <div class="row">
+            {% for item in menu %}
+                <div class="col-md-4">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ item["name"] }}</h5>
+                            <input type="hidden" name="item" value="{{ item["name"] }}">
+                            <input type="number" name="quantity_{{ item["name"] }}" value="0" min="0" class="form-control mb-2">
+                            <input type="hidden" name="preparation_time_{{ item["name"] }}" value="{{ item["preparation_time"] }}">
+                            <p class="card-text">Approx Preparation Time: {{ item["preparation_time"] }} minutes</p>
+                            <input type="hidden" name="price_{{ item["name"] }}" value="{{ item["price"] }}">
+                            <p class="card-text">Price: ₹{{ item["price"] }}</p>
+                            <button type="submit">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </form>
+
+    <button id="view-cart" onclick="showCart()">View Cart</button>
+    <button onclick="showRecommendation()">Show Recommendation</button>
+
+    <!-- Open Orders Section -->
+    {% if closed_orders %}
+        <div id="ready-orders">
+            <h2>Ready to Collect!</h2>
+            <div class="order-list">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Items</th>
+                            <th>Quantities</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in closed_orders %}
+                            <tr>
+                                <td>{{ order._id }}</td>
+                                <td>{{ order.item }}</td>
+                                <td>{{ order.quantity }}</td>
+                                <td>{{ order.status }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- Most Recent Order Section -->
+    {% if recent_item %}
+        <div id="most-recent-order">
+            <h2>Most Recent Order</h2>
+            <p>Item: {{ recent_item }}</p>
+            <!-- Add more details as needed -->
+        </div>
+    {% endif %}
+
+    <button id="past_orders" onclick="past_orders()">Past Orders</button>
+
+     <!-- "Ask CanMan" text -->
+     <div class="ask-canman-text" onclick="redirectToChatbot()">Ask CanMan</div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        function showCart() {
+            window.location.href = "/view_cart?prn={{ student['prn'] }}";
+        }
+
+        function showRecommendation() {
+            window.location.href = `/recommendations/{{ student['prn'] }}`;
+        }
+
+        function past_orders() {
+            window.location.href = "/past_orders/{{ student['prn'] }}";
+        }
+
+        function redirectToChatbot() {
+            window.location.href = "/chatbot.html";
+        }
+
+    </script>
+</body>
+</html>
+
